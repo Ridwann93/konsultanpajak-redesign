@@ -19,8 +19,24 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes gradient-gerak {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-bg-bergerak {
+  background: linear-gradient(-45deg, #00DC82, #3b82f6, #059669, #0ea5e9);
+  background-size: 400% 400%;
+  animation: gradient-gerak 12s ease infinite;
 }
