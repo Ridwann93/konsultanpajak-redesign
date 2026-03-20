@@ -12,11 +12,9 @@ export async function POST(request: Request) {
   );
 
   try {
-    // 1. Hapus dari Auth Supabase (Ini yang paling penting untuk mencabut akses login)
     const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(id);
     if (authError) throw authError;
 
-    // 2. Hapus dari tabel 'users' kamu
     const { error: dbError } = await supabaseAdmin
       .from('users')
       .delete()
