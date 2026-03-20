@@ -72,7 +72,7 @@ export default function Navbar() {
             <button
               key={link.id}
               onClick={() => scrollToSection(link.id)}
-              className={`transition-all duration-300 ${
+              className={`transition-all duration-300 cursor-pointer ${
                 activeSection === link.id 
                 ? "text-teal-700 font-bold scale-105" 
                 : "text-slate-600 hover:text-teal-700"

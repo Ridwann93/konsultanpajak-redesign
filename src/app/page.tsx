@@ -1,34 +1,53 @@
 "use client";
 
+import { useEffect, useState } from 'react';
+import { supabase } from './lib/supabase';
 import { XCircle, CheckCircle2, ArrowRight } from 'lucide-react';
 import Navbar from './components/Navbar'; 
 import Services from './components/Services';
 import About from './components/About';
 import Contact from './components/Contact';
 
-
 export default function Home() {
+  const [cms, setCms] = useState<any>({});
+
+  useEffect(() => {
+    async function getLandingContent() {
+      const { data, error } = await supabase
+        .from('landing_contents')
+        .select('section_name, content_key, content_value');
+      
+      if (data && !error) {
+        const formatted = data.reduce((acc: any, item: any) => {
+          const key = `${item.section_name.toLowerCase()}_${item.content_key.toLowerCase()}`;
+          acc[key] = item.content_value;
+          return acc;
+        }, {});
+        
+        console.log("Data CMS Berhasil Ditarik:", formatted); 
+        setCms(formatted);
+      }
+    }
+    getLandingContent();
+  }, []);
+
   return (
     <div className="bg-white min-h-screen font-sans text-slate-800 scroll-smooth">
-
       <Navbar />
 
-      {/* SECTION 1 */}
+      {/* SECTION 1 - HERO */}
       <section 
         id="beranda" 
         className="min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden pt-20 animate-bg-bergerak"
       >
         <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] -z-10"></div>
         
-
-
         <h1 className="text-5xl md:text-8xl font-extrabold tracking-tight text-white mb-6 max-w-5xl drop-shadow-md">
-          Jasa Konsultan Pajak <br />
-          <span className="text-white/90">Terbaik & Terpercaya</span>
+          {cms.hero_title || "Jasa Konsultan Pajak Terbaik & Terpercaya"}
         </h1>
 
-        <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl font-bold drop-shadow-sm">
-          Kami memberikan garansi aman, terkontrol, dan terpercaya untuk setiap urusan perpajakan dan laporan keuangan bisnis Anda.
+        <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl font-bold drop-shadow-sm">
+          {cms.hero_subtitle || "Kami memberikan garansi aman, terkontrol, dan terpercaya untuk setiap urusan perpajakan dan laporan keuangan bisnis Anda."}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -41,14 +60,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION 2*/}
+      {/* SECTION 2 - PROBLEMS & SOLUTIONS */}
       <section id="" className="flex flex-col justify-center px-4 pt-60 bg-slate-50">
         <div className="max-w-6xl mx-auto w-full">
           <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
             
             <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200">
               <h2 className="text-4xl font-bold text-slate-800 mb-8 pb-4 border-b border-slate-100">
-                Masalah yang Sering Terjadi
+                {cms.problem_title || "Masalah yang Sering Terjadi"}
               </h2>
               <ul className="space-y-6 text-lg">
                 {[
@@ -66,8 +85,10 @@ export default function Home() {
             </div>
 
             <div className="bg-teal-700 p-8 md:p-12 rounded-3xl shadow-xl text-white flex flex-col justify-center">
-              <p className="text-sky-300 font-semibold mb-2">Tenang, Anda tidak sendirian</p>
-              <h2 className="text-3xl font-bold mb-8">Apa yang Anda Dapatkan?</h2>
+              <p className="text-white font-semibold mb-2">Tenang, Anda tidak sendirian</p>
+              <h2 className="text-3xl font-bold mb-8">
+                {cms.solution_title || "Apa yang Anda Dapatkan?"}
+              </h2>
               <ul className="space-y-6">
                 {[
                   "Laporan keuangan rapi tiap bulan",
@@ -78,7 +99,7 @@ export default function Home() {
                 ].map((item, idx) => (
                   <li key={idx} className="flex items-start gap-4">
                     <CheckCircle2 className="text-sky-300 shrink-0 mt-0.5" />
-                    <span className="font-medium text-teal-50">{item}</span>
+                    <span className="font-medium text-white">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -88,7 +109,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION 3 */}
+      {/* SECTION 3 - SKILLS/EXPERIENCE */}
       <section id="" className="flex flex-col justify-center px-4 py-20 bg-teal-50/50">
         <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center">
           
@@ -97,10 +118,10 @@ export default function Home() {
               Pengalaman Kami
             </div>
             <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">
-              Tim kami sudah bersertifikasi dari DJP serta berpengalaman.
+              "Tim kami sudah bersertifikasi dari DJP serta berpengalaman."
             </h2>
             <p className="mt-6 text-slate-500 text-lg">
-              Kami telah membantu berbagai skala perusahaan dalam mengelola konsultasi pajak dan merapikan laporan keuangan mereka dengan akurasi tinggi.
+              "Kami telah membantu berbagai skala perusahaan dalam mengelola konsultasi pajak dan merapikan laporan keuangan mereka dengan akurasi tinggi."
             </p>
           </div>
 
@@ -127,17 +148,18 @@ export default function Home() {
 
         </div>
       </section>
-      <Services />
-      <About />
-      <Contact />
+
+      <Services cms={cms} />
+      <About cms={cms} />
+      <Contact cms={cms} />
 
       <footer className="py-12 px-4 bg-white">
-      <div className="max-w-6xl mx-auto text-center">
-        <p className="text-slate-400 text-sm tracking-wide">
-          Copyright © 2026 by <span className="text-slate-600 font-medium">konsultanpajakdanpembukuan.com</span>
-        </p>
-      </div>
-    </footer>
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-slate-400 text-sm tracking-wide">
+            Copyright © 2026 by <span className="text-slate-600 font-medium">konsultanpajakdanpembukuan.com</span>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

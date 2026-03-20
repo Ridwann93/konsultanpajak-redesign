@@ -1,31 +1,74 @@
 "use client";
 
+import { supabase } from "../lib/supabase";
+import { useState } from "react";
+
 import React from 'react';
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
-  Instagram, 
-  Linkedin, 
-  Send 
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Instagram,
+  Linkedin,
+  Send
 } from 'lucide-react';
 
-export default function Contact() {
+export default function Contact({ cms }: { cms: any }) {
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "", 
+    subject: "",
+    message: ""
+  });
+
+  const handleChange = (e: any) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const { data, error } = await supabase
+      .from("leads")
+      .insert([form]);
+
+    if (error) {
+      alert("Gagal mengirim pesan");
+    } else {
+      alert("Pesan berhasil dikirim!");
+      setForm({
+        name: "",
+        email: "",
+        phone: "", 
+        subject: "",
+        message: ""
+      });
+    }
+    console.log(data)
+    console.log(error)
+  };
+
+
   return (
     <section id="kontak" className="py-38 px-4 bg-slate-50/50">
       <div className="max-w-6xl mx-auto">
-        
+
         <div className="grid lg:grid-cols-2 gap-16 items-start">
-          
+
           <div>
-            <h2 className="text-teal-700 font-bold tracking-[0.2em] text-xs uppercase mb-4">
-              Hubungi Kami
+            <h2 className="text-teal-700 font-bold tracking-[0.2em] text-md uppercase mb-4">
+              {cms.contact_header || "Hubungi Kami"}
             </h2>
             <h3 className="text-4xl font-extrabold text-slate-900 mb-8">
-              Siap Membantu <span className="text-teal-600">Bisnis Anda</span> Bertumbuh
+              {cms.contact_header2 || "Siap Membantu Bisnis Anda Bertumbuh"}
             </h3>
-            
+
             <div className="grid sm:grid-cols-2 gap-8 mb-12">
               {/* Jam Operasional */}
               <div className="space-y-4">
@@ -33,14 +76,13 @@ export default function Contact() {
                   <Clock size={16} className="text-teal-600" /> Opening Hours
                 </h4>
                 <p className="text-slate-500 text-sm leading-relaxed">
-                  Senin - Jumat<br />
-                  08:00 AM - 05:00 PM
+                  {cms.contact_hours || "Senin - Jumat\n08:00 AM - 05:00 PM"}
                 </p>
               </div>
 
               <div className="space-y-4">
                 <h4 className="text-sm font-bold text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                   Social Media
+                  Social Media
                 </h4>
                 <div className="flex gap-3">
                   {[
@@ -63,7 +105,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-tighter mb-1">Telepon / WhatsApp</p>
-                  <p className="text-slate-800 font-medium">(+62) 853-5304-1213</p>
+                  <p className="text-slate-800 font-medium">{cms.contact_phone || "(+62) 853-5304-1213"}</p>
                 </div>
               </div>
 
@@ -73,7 +115,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-tighter mb-1">Email Resmi</p>
-                  <p className="text-slate-800 font-medium lowercase">hallo@konsultanpajakdanpembukuan.com</p>
+                  <p className="text-slate-800 font-medium lowercase">{cms.contact_email || "hallo@konsultanpajakdanpembukuan.com"}</p>
                 </div>
               </div>
 
@@ -84,8 +126,7 @@ export default function Contact() {
                 <div>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-tighter mb-1">Lokasi Kantor</p>
                   <div className="text-slate-800 font-medium space-y-3">
-                    <p>Sovereign Plaza, Cilandak Bar., Jakarta Selatan</p>
-                    <p>Summarecon Bekasi, Marga Mulya, Bekasi Utara</p>
+                    {cms.contact_address || "Sovereign Plaza, Jakarta Selatan\nSummarecon Bekasi, Bekasi Utara"}
                   </div>
                 </div>
               </div>
@@ -93,24 +134,50 @@ export default function Contact() {
           </div>
 
           <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-slate-700 ml-1">Nama Lengkap</label>
-                  <input type="text" placeholder="nama lengkap anda" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800" />
+                  <input type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange} placeholder="nama lengkap anda" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800" />
                 </div>
+
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 ml-1">Email</label>
-                  <input type="email" placeholder="supri@example.com" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800" />
+                  <label className="text-sm font-bold text-slate-700 ml-1">Nomor WhatsApp</label>
+                  <input type="tel"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="081234567890" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800" />
                 </div>
               </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700 ml-1">Email</label>
+                <input type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="supri@example.com" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800" />
+              </div>
+
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-700 ml-1">Subjek</label>
-                <input type="text" placeholder="Konsultasi Pajak UMKM" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800" />
+                <input type="text"
+                  name="subject"
+                  value={form.subject}
+                  onChange={handleChange}
+                  placeholder="Konsultasi Pajak UMKM" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-700 ml-1">Pesan Anda</label>
-                <textarea rows={4} placeholder="Ceritakan kebutuhan bisnis Anda..." className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800 resize-none"></textarea>
+                <textarea rows={4}
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
+                  placeholder="Ceritakan kebutuhan bisnis Anda..." className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 outline-none transition-all text-slate-800 resize-none"></textarea>
               </div>
               <button className="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-2xl shadow-lg shadow-teal-600/20 flex items-center justify-center gap-3 transition-all transform hover:-translate-y-1">
                 Kirim Pesan <Send size={18} />

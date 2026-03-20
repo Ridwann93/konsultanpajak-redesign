@@ -2,7 +2,7 @@
 
 import { Target, Rocket, ShieldCheck } from 'lucide-react';
 
-export default function About() {
+export default function About({ cms }: { cms: any }) {
   return (
     <section id="tentang" className="py-40 px-4 bg-white overflow-hidden">
       <div className="max-w-6xl mx-auto">
@@ -23,23 +23,23 @@ export default function About() {
                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-teal-600 text-white shadow-xl mb-8 rotate-3 hover:rotate-0 transition-transform duration-500">
                   <ShieldCheck size={40} />
                 </div>
-                <h4 className="text-2xl font-bold text-slate-800 mb-4">Konsultan Terpercaya</h4>
+                <h4 className="text-2xl font-bold text-slate-800 mb-4">{cms.about_card_title || "Konsultan Terpercaya"}</h4>
                 <p className="text-slate-500 leading-relaxed">
-                  Lebih dari sekadar angka, kami adalah mitra strategis dalam menjaga kepatuhan dan pertumbuhan bisnis Anda di Indonesia.
+                  {cms.about_card_desc || "Lebih dari sekadar angka, kami adalah mitra strategis dalam menjaga kepatuhan dan pertumbuhan bisnis Anda di Indonesia."}
                 </p>
               </div>
             </div>
           </div>
 
           <div>
-            <h2 className="text-teal-700 font-bold tracking-[0.2em] text-xs uppercase mb-4">
-              Tentang Kami
+            <h2 className="text-teal-700 font-bold tracking-[0.2em] text-md uppercase mb-4">
+              {cms.about_header || "Tentang Kami"}
             </h2>
             <h3 className="text-4xl font-extrabold text-slate-900 leading-tight mb-6">
-              Membangun Fondasi Finansial Bisnis yang <span className="text-teal-600">Kokoh & Transparan</span>
+              {cms.about_title || "Membangun Fondasi Finansial Bisnis yang Kokoh & Transparan"}
             </h3>
             <p className="text-slate-600 text-lg leading-relaxed mb-10">
-              <span className="font-bold text-slate-800">KonsultanPajakdanPembukuan.com</span> adalah layanan profesional yang fokus membantu UMKM, startup, dan perusahaan berkembang dalam mengelola kewajiban perpajakan serta pembukuan usaha secara rapi dan aman.
+              {cms.about_desc || "KonsultanPajakdanPembukuan.com adalah layanan profesional yang fokus membantu UMKM, startup, dan perusahaan berkembang dalam mengelola kewajiban perpajakan serta pembukuan usaha secara rapi dan aman."}
             </p>
 
             <div className="space-y-8">
@@ -49,9 +49,9 @@ export default function About() {
                   <Target size={28} />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold text-slate-800 mb-2">Visi Kami</h4>
+                  <h4 className="text-xl font-bold text-slate-800 mb-2">{cms.about_visi_title || "Visi Kami"}</h4>
                   <p className="text-slate-500 leading-relaxed">
-                    Menjadi mitra terpercaya bagi pelaku usaha Indonesia dalam urusan perpajakan dan pembukuan dengan mengedepankan akurasi, kepatuhan, dan pelayanan profesional.
+                    {cms.about_visi_desc || "Menjadi mitra terpercaya bagi pelaku usaha Indonesia dalam urusan perpajakan dan pembukuan dengan mengedepankan akurasi, kepatuhan, dan pelayanan profesional."}
                   </p>
                 </div>
               </div>
@@ -62,9 +62,9 @@ export default function About() {
                   <Rocket size={28} />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold text-slate-800 mb-2">Misi Kami</h4>
+                  <h4 className="text-xl font-bold text-slate-800 mb-2">{cms.about_misi_title || "Misi Kami"}</h4>
                   <p className="text-slate-500 leading-relaxed">
-                    Memberikan layanan perpajakan yang mudah dipahami, transparan, dan membantu bisnis memiliki laporan keuangan yang rapi serta dapat dipertanggungjawabkan.
+                    {cms.about_misi_desc || "Memberikan layanan perpajakan yang mudah dipahami, transparan, dan membantu bisnis memiliki laporan keuangan yang rapi."}
                   </p>
                 </div>
               </div>
