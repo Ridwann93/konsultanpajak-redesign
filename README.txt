@@ -1,22 +1,11 @@
-Buka "README SQL", jalankan semua perintah.
+1. letakkan file ".env.local" ke dalam folder projek.
 
-lalu buka Kembali readme ini.
+2. ketik "npm install".
 
-- Buka supabase, buka halaman project setting yang ada di sidebar.
+3. jalankan projek "npm run dev".
 
-- buka menu API Keys:
-setelah masuk ke halaman, pilih menu yang bertuliskan "Legacy anon, service_role API keys", lalu copy keys "anon public" dan keys "service role" dan taruh variable NEXT_PUBLIC_SUPABASE_ANON_KEY dan SUPABASE_SERVICE_ROLE_KEY yang ada dibawah teks ini.
+4. localhost:3000 = landing page.
+  
+5. localhost:3000/crm = login crm (include halaman cms).
 
-selanjutnya untuk mengisi variable NEXT_PUBLIC_SUPABASE_URL. buka halaman "Project Overview" yang ada di side bar. copy teks yang bertuliskan "https://********.supabase.co", lalu pastekan di variable dibawah teks ini.
-
-
-(buat file di folder project, Bernama ".env.local" lalu paste kode dibawah)
-
-NEXT_PUBLIC_SUPABASE_URL=taruh disini
-NEXT_PUBLIC_SUPABASE_ANON_KEY=taruh disini
-SUPABASE_SERVICE_ROLE_KEY=taruh disini
-
-
-Langkah terakhir. buka terminal di dalam projek, lalu ketik "npm install".
-
-projek siap dijalankan "npm run dev".
+6. akun login crm: admin@nusaindo.com, pw: 123456
